@@ -1,3 +1,7 @@
-# TP2 - Jérémie Gauthier, Sébastien Paquet et Philippe Marschessault
+# TP2 - 
 
 TP#2 Feed RSS
+
+* Jérémie Gauthier
+* Sébastien Paquet
+* Philippe Marschessault
