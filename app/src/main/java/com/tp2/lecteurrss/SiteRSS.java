@@ -14,37 +14,22 @@ import javax.xml.parsers.ParserConfigurationException;
 
 public class SiteRSS
 {
-    String nomSite;
-    List<NouvellesRSS> listeNouvelles = new ArrayList<NouvellesRSS>();
-    int nbNouvelles;
-    String image;
+    private String nomSite;
+    private List<NouvellesRSS> listeNouvelles = new ArrayList<NouvellesRSS>();
+    private int nbNouvelles;
+    private String image;
 
-    public void parseRSS(String URL)
+    public SiteRSS(String URL) throws IOException, ParserConfigurationException, SAXException
     {
         DocumentBuilder builder;
         Document dom;
 
-        try
-        {
-            if(URL.substring(0, 7).toUpperCase() != "HTTPS://" || URL.substring(0, 6).toUpperCase() != "HTTP://")
-                throw new MalformedURLException();
+        if(!(URL.substring(0, 7).toUpperCase() != "HTTPS://" || URL.substring(0, 6).toUpperCase() != "HTTP://") || URL.contains(" "))
+            throw new MalformedURLException();
 
-            builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            dom = builder.parse(URL);
-            nomSite = dom.getElementsByTagName("title").item(0).getTextContent();
-        }
-        catch(ParserConfigurationException e)
-        {
-            e.printStackTrace();
-        }
-        catch (SAXException e)
-        {
-            e.printStackTrace();
-        }
-        catch(IOException e)
-        {
-            e.printStackTrace();
-        }
+        builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        dom = builder.parse(URL);
+        nomSite = dom.getElementsByTagName("title").item(0).getTextContent();
     }
 
     public String getNomSite()
