@@ -16,22 +16,7 @@ public class SiteRSS
 {
     private String nomSite;
     private List<NouvellesRSS> listeNouvelles = new ArrayList<NouvellesRSS>();
-    private int nbNouvelles;
-    private String image;
-
-    public SiteRSS(String URL) throws IOException, ParserConfigurationException, SAXException
-    {
-        DocumentBuilder builder;
-        Document dom;
-
-        if(!(URL.substring(0, 7).toUpperCase() != "HTTPS://" || URL.substring(0, 6).toUpperCase() != "HTTP://") || URL.contains(" "))
-            throw new MalformedURLException();
-
-        builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-        dom = builder.parse(URL);
-        nomSite = dom.getElementsByTagName("title").item(0).getTextContent();
-    }
-
+    private ImageRSS image;
     public String getNomSite()
     {
         return nomSite;
@@ -44,11 +29,24 @@ public class SiteRSS
 
     public int getNbNouvelles()
     {
-        return nbNouvelles;
+        return listeNouvelles.size();
     }
 
     public String getImageURL()
     {
-        return image;
+        return image.getUrl();
+    }
+
+    public SiteRSS(String URL) throws IOException, ParserConfigurationException, SAXException
+    {
+        DocumentBuilder builder;
+        Document dom;
+
+        if(!(URL.substring(0, 7).toUpperCase() != "HTTPS://" || URL.substring(0, 6).toUpperCase() != "HTTP://") || URL.contains(" "))
+            throw new MalformedURLException();
+
+        builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        dom = builder.parse(URL);
+        nomSite = dom.getElementsByTagName("title").item(0).getTextContent();
     }
 }
