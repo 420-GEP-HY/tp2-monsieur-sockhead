@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/imgNouvelle"
+        android:layout_width="112dp"
+        android:layout_height="77dp"
+        android:layout_weight="1"
+        app:srcCompat="@mipmap/ic_launcher_round" />
+
+    <RelativeLayout
+        android:layout_width="297dp"
+        android:layout_height="78dp"
+        android:layout_weight="1">
+
+        <Button
+            android:id="@+id/btnSupprimerNouvelle"
+            android:layout_width="44dp"
+            android:layout_height="33dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="11dp"
+            android:layout_weight="1"
+            android:text="Button" />
+
+        <TextView
+            android:id="@+id/titreNouvelle"
+            android:layout_width="182dp"
+            android:layout_height="29dp"
+            android:text="TextView" />
+
+        <TextView
+            android:id="@+id/nombreNouvelles"
+            android:layout_width="107dp"
+            android:layout_height="34dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:text="TextView" />
+    </RelativeLayout>
+
+</LinearLayout>
