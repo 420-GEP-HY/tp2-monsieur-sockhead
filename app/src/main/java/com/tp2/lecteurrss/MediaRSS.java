@@ -1,6 +1,6 @@
 package com.tp2.lecteurrss;
 
-public abstract class MediaRSS {
+public class MediaRSS {
     private String type;
 
     public String getType() {
@@ -19,5 +19,13 @@ public abstract class MediaRSS {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    MediaRSS() {}
+
+    MediaRSS(String URL, String Type)
+    {
+        url = URL;
+        type = Type;
     }
 }

@@ -10,55 +10,33 @@ public class NouvellesRSS
     public String getTitre() {
         return Titre;
     }
-    public void setTitre(String titre) {
-        Titre = titre;
-    }
 
+    /*
     private Date DatePublication;
     public Date getDatePublication() {
         return DatePublication;
     }
-    public void setDatePublication(Date datePublication) {
-        DatePublication = datePublication;
-    }
+    */
+
+    private String DatePublication;
+    public String getDatePublication() { return DatePublication; }
 
     private String Description;
     public String getDescription() {
         return Description;
     }
-    public void setDescription(String description) {
+
+    private List<MediaRSS> ListeMedia = new ArrayList<MediaRSS>();
+    public List<MediaRSS> getListeMedia() {
+        return ListeMedia;
+    }
+
+    //NouvellesRSS(String titre, Date datePublication, String description, List<MediaRSS> listeMedia)
+    NouvellesRSS(String titre, String datePublication, String description, List<MediaRSS> listeMedia)
+    {
+        Titre = titre;
+        DatePublication = datePublication;
         Description = description;
-    }
-
-    private ImageRSS image;
-    public ImageRSS getImage() {
-        return image;
-    }
-    public void setImage(ImageRSS image) {
-        this.image = image;
-    }
-
-    private List<ImageRSS> ListeImage = new ArrayList<ImageRSS>();
-    public List<ImageRSS> getListeImage() {
-        return ListeImage;
-    }
-    public void setListeImage(List<ImageRSS> listeImage) {
-        this.ListeImage = listeImage;
-    }
-
-    private List<VideoRSS> ListeVideo = new ArrayList<VideoRSS>();
-    public List<VideoRSS> getListeVideo() {
-        return ListeVideo;
-    }
-    public void setListeVideo(List<VideoRSS> listeVideo) {
-        ListeVideo = listeVideo;
-    }
-
-    private List<AudioRSS> ListeAudio = new ArrayList<AudioRSS>();
-    public List<AudioRSS> getListeAudio() {
-        return ListeAudio;
-    }
-    public void setListeAudio(List<AudioRSS> listeAudio) {
-        ListeAudio = listeAudio;
+        ListeMedia = listeMedia;
     }
 }
