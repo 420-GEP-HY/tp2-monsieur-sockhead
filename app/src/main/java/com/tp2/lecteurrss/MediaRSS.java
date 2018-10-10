@@ -1,6 +1,8 @@
 package com.tp2.lecteurrss;
 
-public class MediaRSS {
+import java.io.Serializable;
+
+public class MediaRSS implements Serializable{
     private String type;
 
     public String getType() {

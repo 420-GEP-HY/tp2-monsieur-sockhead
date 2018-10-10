@@ -16,6 +16,7 @@ import java.util.List;
 public class SiteRSSAdapter extends ArrayAdapter<SiteRSS> {
 
     List<SiteRSS> mesSites;
+    Button btn;
 
     public SiteRSSAdapter(@NonNull Context context, int resource, @NonNull List<SiteRSS> objects) {
         super(context, resource, objects);
@@ -32,13 +33,20 @@ public class SiteRSSAdapter extends ArrayAdapter<SiteRSS> {
         TextView tv1 = convertView.findViewById(R.id.titreNouvelle);
         TextView tv2 = convertView.findViewById(R.id.nombreNouvelles);
         ImageView iv = convertView.findViewById(R.id.imgNouvelle);
-        Button btn = convertView.findViewById(R.id.btnSupprimerNouvelle);
+        btn = convertView.findViewById(R.id.btnSupprimerNouvelle);
 
+        btn.setTag(position);
 
         tv1.setText(mesSites.get(position).getNomSite());
         tv2.setText(mesSites.get(position).getNomSite());
 
-
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mesSites.remove(position);
+                notifyDataSetChanged();
+            }
+        });
 
         return convertView;
     }

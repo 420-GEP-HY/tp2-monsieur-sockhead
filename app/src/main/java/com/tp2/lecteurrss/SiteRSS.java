@@ -7,6 +7,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -18,11 +19,13 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-public class SiteRSS
+public class SiteRSS implements Serializable
 {
     private String nomSite;
     private List<NouvellesRSS> listeNouvelles = new ArrayList<NouvellesRSS>();
     private MediaRSS mediaRSS = new MediaRSS();
+    private int nbNouvelles;
+
     public String getNomSite()
     {
         return nomSite;
@@ -35,7 +38,7 @@ public class SiteRSS
 
     public int getNbNouvelles()
     {
-        return listeNouvelles.size();
+        return nbNouvelles;
     }
 
     public String getImageURL()
@@ -122,5 +125,9 @@ public class SiteRSS
             }
             listeNouvelles.add(new NouvellesRSS(titre, datePublication, description, listeMedia));
         }
+    }
+    public SiteRSS(String nom, int nbNouvelles){
+        this.nomSite = nom;
+        this.nbNouvelles = nbNouvelles;
     }
 }
