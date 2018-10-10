@@ -1,10 +1,11 @@
 package com.tp2.lecteurrss;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class NouvellesRSS
+public class NouvellesRSS implements Serializable
 {
     private String Titre;
     public String getTitre() {
@@ -38,5 +39,8 @@ public class NouvellesRSS
         DatePublication = datePublication;
         Description = description;
         ListeMedia = listeMedia;
+    }
+    NouvellesRSS(String titre){
+        Titre = titre;
     }
 }

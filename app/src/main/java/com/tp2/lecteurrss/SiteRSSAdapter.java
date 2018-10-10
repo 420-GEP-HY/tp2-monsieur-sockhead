@@ -1,6 +1,7 @@
 package com.tp2.lecteurrss;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -11,16 +12,21 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SiteRSSAdapter extends ArrayAdapter<SiteRSS> {
 
     List<SiteRSS> mesSites;
     Button btn;
+    Context context;
 
     public SiteRSSAdapter(@NonNull Context context, int resource, @NonNull List<SiteRSS> objects) {
         super(context, resource, objects);
         this.mesSites = objects;
+        this.context = context;
+
     }
 
     @NonNull
@@ -47,7 +53,27 @@ public class SiteRSSAdapter extends ArrayAdapter<SiteRSS> {
                 notifyDataSetChanged();
             }
         });
+        //On click de limage
+        iv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                redirigerVersActivity(mesSites.get(position).getListeNouvelles());
+            }
+        });
+        //On click du titre
+        tv1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                redirigerVersActivity(mesSites.get(position).getListeNouvelles());
+            }
+        });
 
         return convertView;
+    }
+
+    private  void redirigerVersActivity(List<NouvellesRSS> listeNouvelles){
+        Intent Activite2 = new Intent(context,ListeNouvellesActivity.class);
+        Activite2.putExtra("NOUVELLES", (Serializable) listeNouvelles);
+        context.startActivity(Activite2);
     }
 }

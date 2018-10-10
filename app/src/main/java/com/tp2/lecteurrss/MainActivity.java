@@ -41,21 +41,19 @@ public class MainActivity extends AppCompatActivity {
         btnAjouter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               /* try {
+                try {
                     SiteRSS nouveauSite = new SiteRSS(txtUrl.getText().toString());
+
+                    mesDonnees.add(nouveauSite);
+
+                    updateAdapter();
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (ParserConfigurationException e) {
                     e.printStackTrace();
                 } catch (SAXException e) {
                     e.printStackTrace();
-                }*/
-                //Ligne de test
-                SiteRSS nouveauSite = new SiteRSS(txtUrl.getText().toString(),10);
-
-                mesDonnees.add(nouveauSite);
-
-                updateAdapter();
+                }
             }
         });
     }
