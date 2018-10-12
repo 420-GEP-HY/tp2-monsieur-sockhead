@@ -1,6 +1,8 @@
 package com.tp2.lecteurrss;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -16,8 +18,11 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -37,23 +42,36 @@ public class MainActivity extends AppCompatActivity {
         btnAjouter = findViewById(R.id.btnAddRSS);
         listView = findViewById(R.id.lstView);
         txtUrl = findViewById(R.id.txtUrl);
-
+        mesDonnees = new ArrayList<SiteRSS>();
         btnAjouter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    SiteRSS nouveauSite = new SiteRSS(txtUrl.getText().toString());
 
-                    mesDonnees.add(nouveauSite);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            SiteRSS nouveauSite = new SiteRSS( (String)"https://ici.radio-canada.ca/rss/4159");
+                            mesDonnees.add(nouveauSite);
 
-                    updateAdapter();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (ParserConfigurationException e) {
-                    e.printStackTrace();
-                } catch (SAXException e) {
-                    e.printStackTrace();
-                }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } catch (ParserConfigurationException e) {
+                            e.printStackTrace();
+                        } catch (SAXException e) {
+                            e.printStackTrace();
+                        }
+                        MainActivity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                updateAdapter();
+
+                            }
+                        });
+                    }
+                }).start();
+                //SiteRSS nouveauSite = new SiteRSS(txtUrl.getText().toString());
+
             }
         });
     }
@@ -89,6 +107,8 @@ public class MainActivity extends AppCompatActivity {
             FileOutputStream fos = getApplicationContext().openFileOutput("MesDonnees", Context.MODE_PRIVATE);
             ObjectOutputStream od = new ObjectOutputStream(fos);
             od.writeObject(mesDonnees);
+            od.close();
+            fos.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -98,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateAdapter(){
         ArrayAdapter<SiteRSS> aa = new SiteRSSAdapter(this,0,mesDonnees);
-
         listView.setAdapter(aa);
     }
+
 }

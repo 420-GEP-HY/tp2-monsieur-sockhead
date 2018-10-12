@@ -2,6 +2,7 @@ package com.tp2.lecteurrss;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -13,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 public class SiteRSSAdapter extends ArrayAdapter<SiteRSS> {
@@ -21,6 +21,7 @@ public class SiteRSSAdapter extends ArrayAdapter<SiteRSS> {
     List<SiteRSS> mesSites;
     Button btn;
     Context context;
+    Bitmap bitmap;
 
     public SiteRSSAdapter(@NonNull Context context, int resource, @NonNull List<SiteRSS> objects) {
         super(context, resource, objects);
@@ -33,18 +34,19 @@ public class SiteRSSAdapter extends ArrayAdapter<SiteRSS> {
     @Override
     public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         if(convertView == null){
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.liste_nouvelles_layout,parent,false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.liste_sites_layout,parent,false);
         }
 
-        TextView tv1 = convertView.findViewById(R.id.titreNouvelle);
+        TextView tv1 = convertView.findViewById(R.id.titreSite);
         TextView tv2 = convertView.findViewById(R.id.nombreNouvelles);
-        ImageView iv = convertView.findViewById(R.id.imgNouvelle);
+        ImageView iv = convertView.findViewById(R.id.imgSite);
         btn = convertView.findViewById(R.id.btnSupprimerNouvelle);
-
         btn.setTag(position);
 
         tv1.setText(mesSites.get(position).getNomSite());
-        tv2.setText(mesSites.get(position).getNomSite());
+        Integer i = mesSites.get(position).getNbNouvelles();
+        tv2.setText(Integer.toString(i));
+        iv.setImageBitmap(mesSites.get(position).getBitmap());
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,9 +73,12 @@ public class SiteRSSAdapter extends ArrayAdapter<SiteRSS> {
         return convertView;
     }
 
+
+
     private  void redirigerVersActivity(List<NouvellesRSS> listeNouvelles){
         Intent Activite2 = new Intent(context,ListeNouvellesActivity.class);
         Activite2.putExtra("NOUVELLES", (Serializable) listeNouvelles);
         context.startActivity(Activite2);
     }
+
 }
