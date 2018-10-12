@@ -41,7 +41,7 @@ public class NouvellesRSS implements Serializable
         return bitmap;
     }
 
-<<<<<<< HEAD
+
     private boolean EstLue;
     public boolean isEstLue() {
         return EstLue;
@@ -50,16 +50,8 @@ public class NouvellesRSS implements Serializable
         EstLue = estLue;
     }
 
-    NouvellesRSS(String titre, String datePublication, String description, String link, String urlImage ) throws IOException {
-=======
-    private boolean Visionnee = false;
-    public boolean aEteVisionnee() { return Visionnee; }
-    public void marquerVisionnee() { Visionnee = true; }
-
-    //NouvellesRSS(String titre, Date datePublication, String description, List<MediaRSS> listeMedia)
-    NouvellesRSS(String titre, String datePublication, String description, List<MediaRSS> listeMedia)
+    NouvellesRSS(String titre, String datePublication, String description, String link, String urlImage ) throws IOException
     {
->>>>>>> 4c27e935429246b17602ee0fa1e9bb701e4dada5
         Titre = titre;
         DatePublication = datePublication;
         Description = description;

@@ -47,15 +47,11 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         try {
-<<<<<<< HEAD
-                            SiteRSS nouveauSite = new SiteRSS( (String)"https://ici.radio-canada.ca/rss/4159");
+
+                            SiteRSS nouveauSite = new SiteRSS((String) "https://ici.radio-canada.ca/rss/4159");
                             mesDonnees.add(nouveauSite);
 
-=======
-                            SiteRSS nouveauSite = new SiteRSS("https://ici.radio-canada.ca/rss/4159");
-                            mesDonnees.add(nouveauSite);
-                            updateAdapter();
->>>>>>> 4c27e935429246b17602ee0fa1e9bb701e4dada5
+
                         } catch (IOException e) {
                             e.printStackTrace();
                         } catch (ParserConfigurationException e) {
@@ -63,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
                         } catch (SAXException e) {
                             e.printStackTrace();
                         }
-<<<<<<< HEAD
+
                         MainActivity.this.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -75,11 +71,8 @@ public class MainActivity extends AppCompatActivity {
                 }).start();
                 //SiteRSS nouveauSite = new SiteRSS(txtUrl.getText().toString());
 
-=======
-                    }
-                }).start();
->>>>>>> 4c27e935429246b17602ee0fa1e9bb701e4dada5
             }
+
         });
     }
 
