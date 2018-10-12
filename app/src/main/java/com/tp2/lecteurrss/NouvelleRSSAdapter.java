@@ -9,11 +9,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+<<<<<<< HEAD
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.Serializable;
+=======
+>>>>>>> 4c27e935429246b17602ee0fa1e9bb701e4dada5
 import java.util.List;
 
 public class NouvelleRSSAdapter extends ArrayAdapter<NouvellesRSS> {

@@ -4,24 +4,26 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+<<<<<<< HEAD
 
 import java.io.ByteArrayOutputStream;
+=======
+>>>>>>> 4c27e935429246b17602ee0fa1e9bb701e4dada5
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+<<<<<<< HEAD
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+=======
+>>>>>>> 4c27e935429246b17602ee0fa1e9bb701e4dada5
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -30,7 +32,11 @@ public class SiteRSS implements Serializable
 {
     private String nomSite;
     private List<NouvellesRSS> listeNouvelles = new ArrayList<NouvellesRSS>();
+<<<<<<< HEAD
     private int nbNouvelles;
+=======
+    private MediaRSS mediaRSS = new MediaRSS();
+>>>>>>> 4c27e935429246b17602ee0fa1e9bb701e4dada5
 
     private String urlImage;
     public String getUrlImage() {
@@ -49,7 +55,7 @@ public class SiteRSS implements Serializable
 
     public int getNbNouvelles()
     {
-        return nbNouvelles;
+        return listeNouvelles.size();
     }
 
     private transient Bitmap bitmap;
@@ -68,6 +74,7 @@ public class SiteRSS implements Serializable
 
         builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 
+<<<<<<< HEAD
         dom = builder.parse(StringURL);
         urlImage = dom.getElementsByTagName("image").item(0).getChildNodes().item(1).getTextContent();
         nomSite = dom.getElementsByTagName("title").item(0).getTextContent();
@@ -76,6 +83,24 @@ public class SiteRSS implements Serializable
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
         imageByteArray = stream.toByteArray();
+=======
+        if(dom.getElementsByTagName("image").getLength() > 0)
+        {
+            int nbNodes = dom.getElementsByTagName("image").item(0).getChildNodes().getLength();
+            for (int i = 0; i < nbNodes; i++)
+            {
+                String imageurl = dom.getElementsByTagName("image").item(0).getChildNodes().item(i).getTextContent();
+
+                if (mediaRSS.verifImage(imageurl))
+                {
+                    mediaRSS.setUrl(imageurl);
+                    if(imageurl.toLowerCase().contains(".gif") || imageurl.toLowerCase().contains(".png") || imageurl.toLowerCase().contains(".jpg"))
+                        mediaRSS.setType("image/jpeg");
+                    break;
+                }
+            }
+        }
+>>>>>>> 4c27e935429246b17602ee0fa1e9bb701e4dada5
 
         for(int i = 0; i < dom.getElementsByTagName("item").getLength(); i++)
         {
@@ -89,6 +114,7 @@ public class SiteRSS implements Serializable
             for(int i2 = 0; i2 < nodeParent.getChildNodes().getLength(); i2++) {
                 Node nodeChild = nodeParent.getChildNodes().item(i2);
 
+<<<<<<< HEAD
                 String nameNode = nodeChild.getNodeName();
                 String textNode = nodeChild.getTextContent();
                 switch (nameNode) {
@@ -108,12 +134,64 @@ public class SiteRSS implements Serializable
                         Link = textNode;
                         break;
                     default:
+=======
+                if(nodeChild.getNodeName() == "title")
+                    titre = nodeChild.getTextContent();
+                else if(nodeChild.getNodeName() == "pubDate" || nodeChild.getNodeName() == "dc:date")
+                {
+                    // La date échoue pour parser le String a chaque fois, même si c'est hardcodé.
+                    // On pourra décommenter le code lorsqu'on aura résolu ce problème.
+                    //try
+                    //{
+                        datePublication = nodeChild.getTextContent();
+                        //datePublication = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z").parse(nodeChild.getTextContent());
+                    //}
+                    //catch (ParseException e)
+                    //{
+                    //    datePublication = null;
+                    //}
+                }
+                else if(nodeChild.getNodeName() == "description")
+                    description = nodeChild.getTextContent();
+                else if(nodeChild.getNodeName() == "enclosure")
+                {
+                    Node nodeChildChildURL = nodeChild.getAttributes().getNamedItem("url");
+                    Node nodeChildChildType = nodeChild.getAttributes().getNamedItem("type");
+
+                    listeMedia.add(new MediaRSS(nodeChildChildURL.getTextContent(), nodeChildChildType.getTextContent()));
+                }
+                else if(nodeChild.getNodeName() == "media:thumbnail")
+                {
+                    Node nodeChildChildURL = nodeChild.getAttributes().getNamedItem("url");
+                    String imageurl = nodeChildChildURL.getTextContent();
+                    String imagetype = null;
+
+                    if (mediaRSS.verifImage(imageurl))
+                        if(imageurl.toLowerCase().contains(".gif") || imageurl.toLowerCase().contains(".png") || imageurl.toLowerCase().contains(".jpg"))
+                            imagetype = "image/jpeg";
+
+                    listeMedia.add(new MediaRSS(imageurl, imagetype));
+                }
+                else if(nodeChild.getNodeName() == "itunes:image")
+                {
+                    Node nodeChildChildhref = nodeChild.getAttributes().getNamedItem("href");
+                    String imageurl = nodeChildChildhref.getTextContent();
+                    String imagetype = null;
+
+                    if (mediaRSS.verifImage(imageurl))
+                        if(imageurl.toLowerCase().contains(".gif") || imageurl.toLowerCase().contains(".png") || imageurl.toLowerCase().contains(".jpg"))
+                            imagetype = "image/jpeg";
+
+                    listeMedia.add(new MediaRSS(imageurl, imagetype));
+                }
+>>>>>>> 4c27e935429246b17602ee0fa1e9bb701e4dada5
             }
         }
         listeNouvelles.add(new NouvellesRSS(titre, datePublication, description,Link,UrlImage));
 
         }
     }
+<<<<<<< HEAD
 
 
 
@@ -126,4 +204,6 @@ public class SiteRSS implements Serializable
         InputStream input = connection.getInputStream();
         return BitmapFactory.decodeStream(input);
     }
+=======
+>>>>>>> 4c27e935429246b17602ee0fa1e9bb701e4dada5
 }
