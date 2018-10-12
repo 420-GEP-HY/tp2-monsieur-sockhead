@@ -2,7 +2,6 @@ package com.tp2.lecteurrss;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class NouvellesRSS implements Serializable
@@ -31,6 +30,10 @@ public class NouvellesRSS implements Serializable
     public List<MediaRSS> getListeMedia() {
         return ListeMedia;
     }
+
+    private boolean Visionnee = false;
+    public boolean aEteVisionnee() { return Visionnee; }
+    public void marquerVisionnee() { Visionnee = true; }
 
     //NouvellesRSS(String titre, Date datePublication, String description, List<MediaRSS> listeMedia)
     NouvellesRSS(String titre, String datePublication, String description, List<MediaRSS> listeMedia)

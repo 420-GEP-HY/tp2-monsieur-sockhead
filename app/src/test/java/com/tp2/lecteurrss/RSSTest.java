@@ -1,14 +1,8 @@
 package com.tp2.lecteurrss;
 
 import org.junit.Assert;
-import org.xml.sax.SAXException;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.junit.Test;
 
 public class RSSTest
@@ -30,18 +24,29 @@ public class RSSTest
             bd_sites.add(new SiteRSS("https://www.lapresse.ca/rss/217"));
             bd_sites.add(new SiteRSS("https://www.lapresse.ca/rss/387"));
             */
+
+            // Slashdot
+            bd_sites.add(new SiteRSS("http://rss.slashdot.org/Slashdot/slashdotMain")); // On va devoir gérer les liens et les images dans la description
+
+            // CommentCaMarche
+            bd_sites.add(new SiteRSS("https://www.commentcamarche.net/rss/"));
+
+            // Developpez
+            bd_sites.add(new SiteRSS("https://www.developpez.com/index/rss"));
+
+            // Security Now
+            bd_sites.add(new SiteRSS("http://feeds.twit.tv/sn.xml")); // Version MP3
+            bd_sites.add(new SiteRSS("http://feeds.twit.tv/sn_video_hd.xml")); // Version Vidéo
+
+            // Podtrac
+            bd_sites.add(new SiteRSS("http://feeds.podtrac.com/9dPm65vdpLL1"));
+
+            // Visual Studio Talk Show
+            bd_sites.add(new SiteRSS("http://visualstudiotalkshow.libsyn.com/rss"));
         }
-        catch (IOException e)
+        catch (Exception e)
         {
-            Assert.fail(e.getMessage());
-        }
-        catch (ParserConfigurationException e)
-        {
-            Assert.fail(e.getMessage());
-        }
-        catch (SAXException e)
-        {
-            Assert.fail(e.getMessage());
+            Assert.fail(e.getClass().getName());
         }
     }
 
@@ -53,9 +58,7 @@ public class RSSTest
             SiteRSS siteinvalide = new SiteRSS("je suis un url invalide");
             Assert.fail("Une exception aurait du être attrapé.");
         }
-        catch (IOException e) {}
-        catch (ParserConfigurationException e) {}
-        catch (SAXException e) {}
+        catch (Exception e) {}
     }
 
     @Test
@@ -66,9 +69,7 @@ public class RSSTest
             SiteRSS siteinvalide = new SiteRSS("https://je ne suis pas valide non plus.");
             Assert.fail("Une exception aurait du être attrapé.");
         }
-        catch (IOException e) {}
-        catch (ParserConfigurationException e) {}
-        catch (SAXException e) {}
+        catch (Exception e) {}
     }
 
     @Test
@@ -79,9 +80,7 @@ public class RSSTest
             SiteRSS siteinvalide = new SiteRSS("http://je-nexiste-pas.com");
             Assert.fail("Une exception aurait du être attrapé.");
         }
-        catch (IOException e) {}
-        catch (ParserConfigurationException e) {}
-        catch (SAXException e) {}
+        catch (Exception e) {}
     }
 
     @Test
@@ -92,8 +91,6 @@ public class RSSTest
             SiteRSS sitenorss = new SiteRSS("https://www.google.com");
             Assert.fail("Une exception aurait du être attrapé.");
         }
-        catch (IOException e) {}
-        catch (ParserConfigurationException e) {}
-        catch (SAXException e) {}
+        catch (Exception e) {}
     }
 }

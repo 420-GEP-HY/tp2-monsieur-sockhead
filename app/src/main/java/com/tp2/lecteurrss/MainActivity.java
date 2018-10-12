@@ -4,14 +4,11 @@ import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-
 import org.xml.sax.SAXException;
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -19,7 +16,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-
 import javax.xml.parsers.ParserConfigurationException;
 
 public class MainActivity extends AppCompatActivity {
@@ -41,19 +37,23 @@ public class MainActivity extends AppCompatActivity {
         btnAjouter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    SiteRSS nouveauSite = new SiteRSS(txtUrl.getText().toString());
 
-                    mesDonnees.add(nouveauSite);
-
-                    updateAdapter();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (ParserConfigurationException e) {
-                    e.printStackTrace();
-                } catch (SAXException e) {
-                    e.printStackTrace();
-                }
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            SiteRSS nouveauSite = new SiteRSS("https://ici.radio-canada.ca/rss/4159");
+                            mesDonnees.add(nouveauSite);
+                            updateAdapter();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } catch (ParserConfigurationException e) {
+                            e.printStackTrace();
+                        } catch (SAXException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
             }
         });
     }

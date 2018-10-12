@@ -1,20 +1,13 @@
 package com.tp2.lecteurrss;
 
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.MalformedURLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -24,7 +17,6 @@ public class SiteRSS implements Serializable
     private String nomSite;
     private List<NouvellesRSS> listeNouvelles = new ArrayList<NouvellesRSS>();
     private MediaRSS mediaRSS = new MediaRSS();
-    private int nbNouvelles;
 
     public String getNomSite()
     {
@@ -38,7 +30,7 @@ public class SiteRSS implements Serializable
 
     public int getNbNouvelles()
     {
-        return nbNouvelles;
+        return listeNouvelles.size();
     }
 
     public String getImageURL()
@@ -58,31 +50,22 @@ public class SiteRSS implements Serializable
         dom = builder.parse(URL);
         nomSite = dom.getElementsByTagName("title").item(0).getTextContent();
 
-        // Dès que la logique d'image sera créé, on devra essayer de passer tous les items "Child" jusqu'à ce qu'un URL d'image est passé
-        // Si aucun URL d'image est passé, le site n'aura pas d'image principale à afficher.
-        /*
-        int it = 0;
-        int nbNodes = dom.getElementsByTagName("image").item(0).getChildNodes().getLength();
-        while(it < nbNodes)
+        if(dom.getElementsByTagName("image").getLength() > 0)
         {
-            try
+            int nbNodes = dom.getElementsByTagName("image").item(0).getChildNodes().getLength();
+            for (int i = 0; i < nbNodes; i++)
             {
-                String imageurl = dom.getElementsByTagName("image").item(0).getChildNodes().item(it).getTextContent();
-                image.setUrl(imageurl);
-                LogiqueTestantSiUrlEstUneImageIci(imageurl); // Ou la logique qui parse l'image et qui va planter au moment où elle réalise que ce n'est pas image.
-                it = nbNodes;
-            }
-            catch(Exception ex) // Ce n'est pas une image
-            {
-                image.setUrl(null);
-            }
-            finally
-            {
-                it++;
+                String imageurl = dom.getElementsByTagName("image").item(0).getChildNodes().item(i).getTextContent();
+
+                if (mediaRSS.verifImage(imageurl))
+                {
+                    mediaRSS.setUrl(imageurl);
+                    if(imageurl.toLowerCase().contains(".gif") || imageurl.toLowerCase().contains(".png") || imageurl.toLowerCase().contains(".jpg"))
+                        mediaRSS.setType("image/jpeg");
+                    break;
+                }
             }
         }
-        */
-        mediaRSS.setUrl(dom.getElementsByTagName("image").item(0).getChildNodes().item(1).getTextContent());
 
         for(int i = 0; i < dom.getElementsByTagName("item").getLength(); i++)
         {
@@ -99,7 +82,7 @@ public class SiteRSS implements Serializable
 
                 if(nodeChild.getNodeName() == "title")
                     titre = nodeChild.getTextContent();
-                else if(nodeChild.getNodeName() == "pubDate")
+                else if(nodeChild.getNodeName() == "pubDate" || nodeChild.getNodeName() == "dc:date")
                 {
                     // La date échoue pour parser le String a chaque fois, même si c'est hardcodé.
                     // On pourra décommenter le code lorsqu'on aura résolu ce problème.
@@ -122,12 +105,32 @@ public class SiteRSS implements Serializable
 
                     listeMedia.add(new MediaRSS(nodeChildChildURL.getTextContent(), nodeChildChildType.getTextContent()));
                 }
+                else if(nodeChild.getNodeName() == "media:thumbnail")
+                {
+                    Node nodeChildChildURL = nodeChild.getAttributes().getNamedItem("url");
+                    String imageurl = nodeChildChildURL.getTextContent();
+                    String imagetype = null;
+
+                    if (mediaRSS.verifImage(imageurl))
+                        if(imageurl.toLowerCase().contains(".gif") || imageurl.toLowerCase().contains(".png") || imageurl.toLowerCase().contains(".jpg"))
+                            imagetype = "image/jpeg";
+
+                    listeMedia.add(new MediaRSS(imageurl, imagetype));
+                }
+                else if(nodeChild.getNodeName() == "itunes:image")
+                {
+                    Node nodeChildChildhref = nodeChild.getAttributes().getNamedItem("href");
+                    String imageurl = nodeChildChildhref.getTextContent();
+                    String imagetype = null;
+
+                    if (mediaRSS.verifImage(imageurl))
+                        if(imageurl.toLowerCase().contains(".gif") || imageurl.toLowerCase().contains(".png") || imageurl.toLowerCase().contains(".jpg"))
+                            imagetype = "image/jpeg";
+
+                    listeMedia.add(new MediaRSS(imageurl, imagetype));
+                }
             }
             listeNouvelles.add(new NouvellesRSS(titre, datePublication, description, listeMedia));
         }
-    }
-    public SiteRSS(String nom, int nbNouvelles){
-        this.nomSite = nom;
-        this.nbNouvelles = nbNouvelles;
     }
 }

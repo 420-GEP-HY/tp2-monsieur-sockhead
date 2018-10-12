@@ -2,7 +2,6 @@ package com.tp2.lecteurrss;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-
 import java.util.ArrayList;
 import java.util.List;
 
