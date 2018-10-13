@@ -40,16 +40,18 @@ public class NouvelleRSSAdapter extends ArrayAdapter<NouvellesRSS> {
         CheckBox chk = convertView.findViewById(R.id.checkboxLue);
 
         tv1.setText(mesNouvelles.get(position).getTitre());
-        //iv.setImageBitmap(mesNouvelles.get(position).getBitmap());
+        iv.setImageBitmap(mesNouvelles.get(position).getBitmap());
         chk.setChecked(mesNouvelles.get(position).isEstLue());
 
+        /**
         //On click de limage
-        //iv.setOnClickListener(new View.OnClickListener() {
-           // @Override
-            //public void onClick(View v) {
-              //  redirigerVersActivity(mesNouvelles.get(position));
-            //}
-        //});
+        iv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                redirigerVersActivity(mesNouvelles.get(position));
+            }
+        });
+*/
         //On click du titre
         tv1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,6 +66,7 @@ public class NouvelleRSSAdapter extends ArrayAdapter<NouvellesRSS> {
 
 
     private  void redirigerVersActivity(NouvellesRSS Nouvelles){
+        Nouvelles.setEstLue(true);
         Intent Activite3 = new Intent(context,DetailsNouvelleActivity.class);
         Activite3.putExtra("NOUVELLE", (Serializable) Nouvelles);
         context.startActivity(Activite3);

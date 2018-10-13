@@ -3,6 +3,7 @@ package com.tp2.lecteurrss;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
@@ -36,11 +37,14 @@ public class NouvellesRSS implements Serializable
     public String getUrlImage() {
         return UrlImage;
     }
+
     private transient  Bitmap bitmap;
     public Bitmap getBitmap() {
         return bitmap;
     }
-
+    public void setBitmap(Bitmap bmp){
+        bitmap = bmp;
+    }
 
     private boolean EstLue;
     public boolean isEstLue() {
@@ -50,6 +54,15 @@ public class NouvellesRSS implements Serializable
         EstLue = estLue;
     }
 
+    private byte[] imageByteArray;
+    public void setImageByArray(byte[] array)
+    {
+        imageByteArray = array;
+    }
+    public byte[] getImageByteArray() {
+        return imageByteArray;
+    }
+
     NouvellesRSS(String titre, String datePublication, String description, String link, String urlImage ) throws IOException
     {
         Titre = titre;
@@ -57,12 +70,11 @@ public class NouvellesRSS implements Serializable
         Description = description;
         Link = link;
         UrlImage = urlImage;
-        if(UrlImage!= "")
-        bitmap = GetbitmapByUrl(new URL(UrlImage));
-        EstLue = true;
+
+        EstLue = false;
     }
 
-    private Bitmap GetbitmapByUrl (URL url) throws IOException {
+    public Bitmap GetbitmapByUrl (URL url) throws IOException {
 
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setDoInput(true);
@@ -71,6 +83,9 @@ public class NouvellesRSS implements Serializable
         InputStream input = connection.getInputStream();
         return BitmapFactory.decodeStream(input);
     }
+    public Bitmap BimapArray(byte[] arrayImage){
 
+        return BitmapFactory.decodeByteArray(arrayImage, 0, arrayImage.length);
+    }
 
 }

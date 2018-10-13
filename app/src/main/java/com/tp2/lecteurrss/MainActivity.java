@@ -86,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
             ObjectInputStream is = new ObjectInputStream(fis);
             mondata = (ArrayList<SiteRSS>) is.readObject();
             for(SiteRSS site:mondata){
+                site.setBitpmap(site.BimapArray(site.getImageByteArray()));
                 mesDonnees.add(site);
             }
         } catch (FileNotFoundException e) {

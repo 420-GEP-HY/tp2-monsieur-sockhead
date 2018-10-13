@@ -72,12 +72,11 @@ public class SiteRSSAdapter extends ArrayAdapter<SiteRSS> {
         return convertView;
     }
 
-
-
     private  void redirigerVersActivity(List<NouvellesRSS> listeNouvelles){
         Intent Activite2 = new Intent(context,ListeNouvellesActivity.class);
         Activite2.putExtra("NOUVELLES", (Serializable) listeNouvelles);
         context.startActivity(Activite2);
     }
+
 
 }

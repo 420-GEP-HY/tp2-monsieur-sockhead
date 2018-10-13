@@ -50,19 +50,27 @@ public class SiteRSS implements Serializable
     }
 
     private transient Bitmap bitmap;
+    public void setBitpmap(Bitmap bmp)
+    {
+        bitmap = bmp;
+    }
     public Bitmap getBitmap()
     { return bitmap;}
 
-    public byte[] imageByteArray;
+    private byte[] imageByteArray;
 
-    DocumentBuilder builder;
-    Document dom;
+    public byte[] getImageByteArray() {
+        return imageByteArray;
+    }
+
 
     public SiteRSS(String StringURL) throws IOException, ParserConfigurationException, SAXException
     {
+        DocumentBuilder builder;
+        Document dom;
+
         if(!(StringURL.substring(0, 7).toUpperCase() != "HTTPS://" || StringURL.substring(0, 6).toUpperCase() != "HTTP://") || StringURL.contains(" "))
             throw new MalformedURLException();
-
 
         builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         dom = builder.parse(StringURL);
@@ -70,7 +78,9 @@ public class SiteRSS implements Serializable
         urlImage = dom.getElementsByTagName("image").item(0).getChildNodes().item(1).getTextContent();
         nomSite = dom.getElementsByTagName("title").item(0).getTextContent();
         nbNouvelles = dom.getElementsByTagName("item").getLength();
+        if(!urlImage.equals(""))
         bitmap = GetbitmapByUrl(new URL(urlImage));
+
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
         imageByteArray = stream.toByteArray();
@@ -123,6 +133,11 @@ public class SiteRSS implements Serializable
 
         InputStream input = connection.getInputStream();
         return BitmapFactory.decodeStream(input);
+    }
+
+    public Bitmap BimapArray( byte[] arrayImage){
+
+        return BitmapFactory.decodeByteArray(arrayImage, 0, arrayImage.length);
     }
 
 }
