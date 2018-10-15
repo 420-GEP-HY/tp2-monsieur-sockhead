@@ -14,11 +14,11 @@ public class RSSTest
         try
         {
             // Radio-Canada
-            bd_sites.add(new SiteRSS("https://ici.radio-canada.ca/rss/4159"));
-            bd_sites.add(new SiteRSS("https://ici.radio-canada.ca/rss/1000524"));
+            bd_sites.add(new SiteRSS("https://ici.radio-canada.ca/rss/4159", true));
+            bd_sites.add(new SiteRSS("https://ici.radio-canada.ca/rss/1000524", true));
 
             // La Presse
-            // Erreur 403 - Tester sur téléphone plus tard
+            // Erreur 403 - À la fois pour Android et pour les tests
             /*
             bd_sites.add(new SiteRSS("https://www.lapresse.ca/rss/225"));
             bd_sites.add(new SiteRSS("https://www.lapresse.ca/rss/217"));
@@ -26,23 +26,23 @@ public class RSSTest
             */
 
             // Slashdot
-            bd_sites.add(new SiteRSS("http://rss.slashdot.org/Slashdot/slashdotMain")); // On va devoir gérer les liens et les images dans la description
+            bd_sites.add(new SiteRSS("http://rss.slashdot.org/Slashdot/slashdotMain", true));
 
             // CommentCaMarche
-            bd_sites.add(new SiteRSS("https://www.commentcamarche.net/rss/"));
+            bd_sites.add(new SiteRSS("https://www.commentcamarche.net/rss/", true));
 
             // Developpez
-            bd_sites.add(new SiteRSS("https://www.developpez.com/index/rss"));
+            bd_sites.add(new SiteRSS("https://www.developpez.com/index/rss", true));
 
             // Security Now
-            bd_sites.add(new SiteRSS("http://feeds.twit.tv/sn.xml")); // Version MP3
-            bd_sites.add(new SiteRSS("http://feeds.twit.tv/sn_video_hd.xml")); // Version Vidéo
+            bd_sites.add(new SiteRSS("http://feeds.twit.tv/sn.xml", true)); // Version MP3
+            bd_sites.add(new SiteRSS("http://feeds.twit.tv/sn_video_hd.xml", true)); // Version Vidéo
 
             // Podtrac
-            bd_sites.add(new SiteRSS("http://feeds.podtrac.com/9dPm65vdpLL1"));
+            bd_sites.add(new SiteRSS("http://feeds.podtrac.com/9dPm65vdpLL1", true));
 
             // Visual Studio Talk Show
-            bd_sites.add(new SiteRSS("http://visualstudiotalkshow.libsyn.com/rss"));
+            bd_sites.add(new SiteRSS("http://visualstudiotalkshow.libsyn.com/rss", true));
         }
         catch (Exception e)
         {
@@ -55,7 +55,7 @@ public class RSSTest
     {
         try
         {
-            SiteRSS siteinvalide = new SiteRSS("je suis un url invalide");
+            SiteRSS siteinvalide = new SiteRSS("je suis un url invalide", true);
             Assert.fail("Une exception aurait du être attrapé.");
         }
         catch (Exception e) {}
@@ -66,7 +66,7 @@ public class RSSTest
     {
         try
         {
-            SiteRSS siteinvalide = new SiteRSS("https://je ne suis pas valide non plus.");
+            SiteRSS siteinvalide = new SiteRSS("https://je ne suis pas valide non plus.", true);
             Assert.fail("Une exception aurait du être attrapé.");
         }
         catch (Exception e) {}
@@ -77,7 +77,7 @@ public class RSSTest
     {
         try
         {
-            SiteRSS siteinvalide = new SiteRSS("http://je-nexiste-pas.com");
+            SiteRSS siteinvalide = new SiteRSS("http://je-nexiste-pas.com", true);
             Assert.fail("Une exception aurait du être attrapé.");
         }
         catch (Exception e) {}
@@ -88,7 +88,7 @@ public class RSSTest
     {
         try
         {
-            SiteRSS sitenorss = new SiteRSS("https://www.google.com");
+            SiteRSS sitenorss = new SiteRSS("https://www.google.com", true);
             Assert.fail("Une exception aurait du être attrapé.");
         }
         catch (Exception e) {}

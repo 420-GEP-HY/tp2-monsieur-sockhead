@@ -45,7 +45,11 @@ public class SiteRSSAdapter extends ArrayAdapter<SiteRSS> {
         tv1.setText(mesSites.get(position).getNomSite());
         Integer i = mesSites.get(position).getNbNouvelles();
         tv2.setText(Integer.toString(i));
-        iv.setImageBitmap(mesSites.get(position).getBitmap());
+
+        if(mesSites.get(position).getBitmap() != null)
+            iv.setImageBitmap(mesSites.get(position).getBitmap());
+        else
+            iv.setImageResource(R.drawable.unknownicon);
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override

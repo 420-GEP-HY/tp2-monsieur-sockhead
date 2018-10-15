@@ -38,7 +38,7 @@ public class NouvellesRSS implements Serializable
         return UrlImage;
     }
 
-    private transient  Bitmap bitmap;
+    private transient Bitmap bitmap;
     public Bitmap getBitmap() {
         return bitmap;
     }
@@ -63,19 +63,18 @@ public class NouvellesRSS implements Serializable
         return imageByteArray;
     }
 
-    NouvellesRSS(String titre, String datePublication, String description, String link, String urlImage ) throws IOException
+    public NouvellesRSS(String titre, String datePublication, String description, String link, String urlImage) throws IOException
     {
         Titre = titre;
         DatePublication = datePublication;
         Description = description;
         Link = link;
         UrlImage = urlImage;
-
         EstLue = false;
     }
 
-    public Bitmap GetbitmapByUrl (URL url) throws IOException {
-
+    public Bitmap GetbitmapByUrl (URL url) throws IOException
+    {
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setDoInput(true);
         connection.connect();
@@ -83,9 +82,9 @@ public class NouvellesRSS implements Serializable
         InputStream input = connection.getInputStream();
         return BitmapFactory.decodeStream(input);
     }
-    public Bitmap BimapArray(byte[] arrayImage){
 
+    public Bitmap BimapArray(byte[] arrayImage)
+    {
         return BitmapFactory.decodeByteArray(arrayImage, 0, arrayImage.length);
     }
-
 }

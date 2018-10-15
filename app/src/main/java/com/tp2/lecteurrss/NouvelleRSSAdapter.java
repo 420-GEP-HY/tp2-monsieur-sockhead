@@ -3,6 +3,7 @@ package com.tp2.lecteurrss;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -40,18 +41,40 @@ public class NouvelleRSSAdapter extends ArrayAdapter<NouvellesRSS> {
         CheckBox chk = convertView.findViewById(R.id.checkboxLue);
 
         tv1.setText(mesNouvelles.get(position).getTitre());
-        iv.setImageBitmap(mesNouvelles.get(position).getBitmap());
         chk.setChecked(mesNouvelles.get(position).isEstLue());
 
-        /**
+        if(mesNouvelles.get(position).getBitmap() != null)
+            iv.setImageBitmap(mesNouvelles.get(position).getBitmap());
+        else if(mesNouvelles.get(position).getUrlImage().contains("mp3"))
+            iv.setImageResource(R.drawable.musicicon);
+        else if(mesNouvelles.get(position).getUrlImage().contains("mp4"))
+            iv.setImageResource(R.drawable.videoicon);
+        else
+            iv.setImageResource(R.drawable.unknownicon);
+
         //On click de limage
         iv.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                redirigerVersActivity(mesNouvelles.get(position));
+            public void onClick(View v)
+            {
+                String url = mesNouvelles.get(position).getUrlImage();
+                if(url.contains("mp3"))
+                {
+                    Intent intent = new Intent();
+                    intent.setAction(Intent.ACTION_VIEW);
+                    intent.setDataAndType(Uri.parse(mesNouvelles.get(position).getUrlImage()), "audio/mp3");
+                    context.startActivity(intent);
+                }
+                else if(url.contains("mp4"))
+                {
+                    Intent intent = new Intent();
+                    intent.setAction(Intent.ACTION_VIEW);
+                    intent.setDataAndType(Uri.parse(mesNouvelles.get(position).getUrlImage()), "video/mp4");
+                    context.startActivity(intent);
+                }
             }
         });
-*/
+
         //On click du titre
         tv1.setOnClickListener(new View.OnClickListener() {
             @Override

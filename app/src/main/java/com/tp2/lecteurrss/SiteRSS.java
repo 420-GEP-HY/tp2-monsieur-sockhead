@@ -25,28 +25,24 @@ import javax.xml.parsers.ParserConfigurationException;
 public class SiteRSS implements Serializable
 {
     private String nomSite;
-    private List<NouvellesRSS> listeNouvelles = new ArrayList<NouvellesRSS>();
-
-    private int nbNouvelles;
-
-    private String urlImage;
-    public String getUrlImage() {
-        return urlImage;
-    }
-
     public String getNomSite()
     {
         return nomSite;
     }
 
+    private List<NouvellesRSS> listeNouvelles = new ArrayList<NouvellesRSS>();
     public List<NouvellesRSS> getListeNouvelles()
     {
         return listeNouvelles;
     }
-
     public int getNbNouvelles()
     {
         return listeNouvelles.size();
+    }
+
+    private String urlImage;
+    public String getUrlImage() {
+        return urlImage;
     }
 
     private transient Bitmap bitmap;
@@ -54,17 +50,14 @@ public class SiteRSS implements Serializable
     {
         bitmap = bmp;
     }
-    public Bitmap getBitmap()
-    { return bitmap;}
+    public Bitmap getBitmap() { return bitmap;}
 
     private byte[] imageByteArray;
-
     public byte[] getImageByteArray() {
         return imageByteArray;
     }
 
-
-    public SiteRSS(String StringURL) throws IOException, ParserConfigurationException, SAXException
+    public SiteRSS(String StringURL, boolean test) throws IOException, ParserConfigurationException, SAXException
     {
         DocumentBuilder builder;
         Document dom;
@@ -75,16 +68,31 @@ public class SiteRSS implements Serializable
         builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         dom = builder.parse(StringURL);
 
-        urlImage = dom.getElementsByTagName("image").item(0).getChildNodes().item(1).getTextContent();
         nomSite = dom.getElementsByTagName("title").item(0).getTextContent();
-        nbNouvelles = dom.getElementsByTagName("item").getLength();
-        if(!urlImage.equals(""))
-        bitmap = GetbitmapByUrl(new URL(urlImage));
 
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        imageByteArray = stream.toByteArray();
+        if(dom.getElementsByTagName("image").getLength() > 0)
+        {
+            int nbNodes = dom.getElementsByTagName("image").item(0).getChildNodes().getLength();
+            for(int i = 0; i < nbNodes; i++)
+            {
+                String tmpImage = dom.getElementsByTagName("image").item(0).getChildNodes().item(i).getTextContent();
 
+                if(verifImage(tmpImage))
+                {
+                    urlImage = tmpImage;
+                    if(!test)
+                        bitmap = GetbitmapByUrl(new URL(urlImage));
+                    break;
+                }
+            }
+        }
+
+        if(!test && urlImage != null)
+        {
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            imageByteArray = stream.toByteArray();
+        }
 
         for(int i = 0; i < dom.getElementsByTagName("item").getLength(); i++)
         {
@@ -95,38 +103,42 @@ public class SiteRSS implements Serializable
             String Link = "";
             String UrlImage = "";
 
-            for(int i2 = 0; i2 < nodeParent.getChildNodes().getLength(); i2++) {
+            for(int i2 = 0; i2 < nodeParent.getChildNodes().getLength(); i2++)
+            {
                 Node nodeChild = nodeParent.getChildNodes().item(i2);
 
-                String nameNode = nodeChild.getNodeName();
-                String textNode = nodeChild.getTextContent();
-                switch (nameNode) {
+                switch (nodeChild.getNodeName())
+                {
                     case "title":
-                        titre = textNode;
+                        titre = nodeChild.getTextContent();
                         break;
                     case "pubDate":
-                        datePublication = textNode;
+                    case "dc:date":
+                        datePublication = nodeChild.getTextContent();
                         break;
                     case "description":
-                        description = textNode;
+                        description = nodeChild.getTextContent();
                         break;
                     case "enclosure":
-                        UrlImage = nodeChild.getAttributes().getNamedItem("url").getTextContent();
+                    case "media:thumbnail":
+                        if(UrlImage.isEmpty())
+                            UrlImage = nodeChild.getAttributes().getNamedItem("url").getTextContent();
+                        break;
+                    case "itunes:image":
+                        if(UrlImage.isEmpty())
+                            UrlImage = nodeChild.getAttributes().getNamedItem("href").getTextContent();
                         break;
                     case "link":
-                        Link = textNode;
+                        Link = nodeChild.getTextContent();
                         break;
-                    default:
+                }
             }
-        }
-        listeNouvelles.add(new NouvellesRSS(titre, datePublication, description,Link,UrlImage));
-
+        listeNouvelles.add(new NouvellesRSS(titre, datePublication, description, Link, UrlImage));
         }
     }
 
-
-    private Bitmap GetbitmapByUrl (URL url) throws IOException {
-
+    private Bitmap GetbitmapByUrl (URL url) throws IOException
+    {
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setDoInput(true);
         connection.connect();
@@ -135,9 +147,25 @@ public class SiteRSS implements Serializable
         return BitmapFactory.decodeStream(input);
     }
 
-    public Bitmap BimapArray( byte[] arrayImage){
-
-        return BitmapFactory.decodeByteArray(arrayImage, 0, arrayImage.length);
+    public Bitmap BimapArray( byte[] arrayImage)
+    {
+        if(arrayImage != null)
+            return BitmapFactory.decodeByteArray(arrayImage, 0, arrayImage.length);
+        else
+            return null;
     }
 
+    private boolean verifImage(String imageURL)
+    {
+        try
+        {
+            URL url = new URL(imageURL);
+            InputStream is = url.openStream();
+            return true;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+    }
 }

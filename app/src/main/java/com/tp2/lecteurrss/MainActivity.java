@@ -48,9 +48,7 @@ public class MainActivity extends AppCompatActivity {
                     public void run() {
                         try {
 
-                            SiteRSS nouveauSite = new SiteRSS((String) "https://ici.radio-canada.ca/rss/4159");
-                            mesDonnees.add(nouveauSite);
-
+                            SiteRSS nouveauSite = new SiteRSS(txtUrl.getText().toString(), false);
 
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -69,10 +67,7 @@ public class MainActivity extends AppCompatActivity {
                         });
                     }
                 }).start();
-                //SiteRSS nouveauSite = new SiteRSS(txtUrl.getText().toString());
-
             }
-
         });
     }
 

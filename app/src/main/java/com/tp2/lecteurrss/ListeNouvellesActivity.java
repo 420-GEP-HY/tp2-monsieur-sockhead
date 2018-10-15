@@ -37,13 +37,15 @@ public class ListeNouvellesActivity extends AppCompatActivity {
                     for(NouvellesRSS nouvelle: listeNouvelles){
                         if(!nouvelle.getUrlImage().equals(""))
                         {
-                            nouvelle.setBitmap(nouvelle.GetbitmapByUrl(new URL(nouvelle.getUrlImage())));
-                            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                            nouvelle.getBitmap().compress(Bitmap.CompressFormat.PNG, 100, stream);
-                            nouvelle.setImageByArray( stream.toByteArray());
-                            nouvelle.setBitmap(nouvelle.BimapArray(nouvelle.getImageByteArray()));
+                            if(!nouvelle.getUrlImage().contains(".mp3") && !nouvelle.getUrlImage().contains(".mp4"))
+                            {
+                                nouvelle.setBitmap(nouvelle.GetbitmapByUrl(new URL(nouvelle.getUrlImage())));
+                                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                                nouvelle.getBitmap().compress(Bitmap.CompressFormat.PNG, 100, stream);
+                                nouvelle.setImageByArray(stream.toByteArray());
+                                nouvelle.setBitmap(nouvelle.BimapArray(nouvelle.getImageByteArray()));
+                            }
                         }
-
                     }
                     ListeNouvellesActivity.this.runOnUiThread(new Runnable() {
                         @Override
