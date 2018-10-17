@@ -40,7 +40,6 @@ public class SiteRSSAdapter extends ArrayAdapter<SiteRSS> {
         TextView tv2 = convertView.findViewById(R.id.nombreNouvelles);
         ImageView iv = convertView.findViewById(R.id.imgSite);
         btn = convertView.findViewById(R.id.btnSupprimerNouvelle);
-        btn.setTag(position);
 
         tv1.setText(mesSites.get(position).getNomSite());
         Integer i = mesSites.get(position).getNbNouvelles();

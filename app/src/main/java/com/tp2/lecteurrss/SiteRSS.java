@@ -61,10 +61,12 @@ public class SiteRSS implements Serializable
     {
         DocumentBuilder builder;
         Document dom;
-
-        if(!(StringURL.substring(0, 7).toUpperCase() != "HTTPS://" || StringURL.substring(0, 6).toUpperCase() != "HTTP://") || StringURL.contains(" "))
-            throw new MalformedURLException();
-
+        try {
+            if (!(StringURL.substring(0, 7).toUpperCase() != "HTTPS://" || StringURL.substring(0, 6).toUpperCase() != "HTTP://") || StringURL.contains(" "))
+                throw new MalformedURLException();
+        }catch(Exception e) {
+        throw new MalformedURLException();
+        }
         builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         dom = builder.parse(StringURL);
 

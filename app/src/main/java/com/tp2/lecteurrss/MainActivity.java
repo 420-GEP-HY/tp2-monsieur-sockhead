@@ -1,6 +1,7 @@
 package com.tp2.lecteurrss;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
@@ -39,6 +40,11 @@ public class MainActivity extends AppCompatActivity {
         listView = findViewById(R.id.lstView);
         txtUrl = findViewById(R.id.txtUrl);
         mesDonnees = new ArrayList<SiteRSS>();
+
+        if(Intent.ACTION_VIEW.equals(getIntent().getAction())){
+            txtUrl.setText(getIntent().getDataString());
+        }
+
         btnAjouter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -49,15 +55,16 @@ public class MainActivity extends AppCompatActivity {
                         try {
 
                             SiteRSS nouveauSite = new SiteRSS(txtUrl.getText().toString(), false);
-
+                            mesDonnees.add(nouveauSite);
                         } catch (IOException e) {
                             e.printStackTrace();
                         } catch (ParserConfigurationException e) {
                             e.printStackTrace();
                         } catch (SAXException e) {
                             e.printStackTrace();
+                        } catch (Exception ex){
+                            ex.printStackTrace();
                         }
-
                         MainActivity.this.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
